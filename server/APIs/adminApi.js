@@ -1,55 +1,66 @@
-const express = require('express');
+const express = require("express");
 const adminApp = express.Router();
-const admin=require('../models/adminModel')
-const { verifyAdmin } = require('./verifyAdmin');  // Ensure only Admin can access
-const User = require('../models/userAuthorModel'); // Import User model
+const UserAuthor = require("../models/userAuthorModel");
+const expressAsyncHandler=require("express-async-handler")
+const {requireAuth}=require("@clerk/express")
+adminApp.post("/admin", 
+  expressAsyncHandler(async (req, res) => {
+  const newUserAuthor=req.body;
+  //find the user by email id
+  const userInDb=await UserAuthor.findOne({email:newUserAuthor.email})
+  //if user or author existed
+  if(userInDb!==null)
+  {
+    //check with role
+    if(newUserAuthor.role===userInDb.role)
+     {
+      res.status(200).send({message:newUserAuthor.role,payload:userInDb})
+     }
+     else{
+      res.status(200).send({message:"Invalid role"})
+     }
+  }
+  else
+  {
+    let newUser=new UserAuthor(newUserAuthor);
+    let newUserOrAuthorDoc=await newUser.save();
+    res.status(201).send({message:newUserOrAuthorDoc.role,payload:newUserOrAuthorDoc})
+  }
+
+}));
 
 
-adminApp.post("/admin-login", async (req, res) => {
-    const { email, password } = req.body;
+adminApp.put("/admin/block-unblock/:id",requireAuth({signInUrl:"unauthorized"}) ,expressAsyncHandler(async (req, res) => {
+  const id = req.params.id;
+  const { blocked } = req.body; 
 
-    try {
-        const admin = await Admin.findOne({ email });
-        if (!admin) return res.status(404).json({ message: "Admin not found" });
+  if (blocked === undefined) {
+    return res.status(400).send({ message: "Blocked status is required" });
+  }
 
-        const isMatch = await bcrypt.compare(password, admin.password);
-        if (!isMatch) return res.status(401).json({ message: "Invalid credentials" });
+  // console.log("id:", id, "blocked:", blocked);
 
-        const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+  try {
+    const userAuthor = await UserAuthor.findByIdAndUpdate(
+      id,
+      { blocked }, 
+      { new: true } 
+    );
 
-        res.json({ message: "Login successful", token, role: "admin" });
-    } catch (err) {
-        res.status(500).json({ message: "Server error" });
+    if (!userAuthor) {
+      return res.status(404).send({ message: "User not found" });
     }
-});
-// ✅ Admin API Base Route
-adminApp.get("/", (req, res) => {
-    res.send({ message: "Welcome to Admin API" });
-});
 
-// ✅ Get all users & authors (Only Admin can access)
-adminApp.get("/users", verifyAdmin, async (req, res) => {
-    try {
-        const users = await User.find({}, 'name email role isBlocked'); // Fetch specific fields
-        res.json(users);
-    } catch (err) {
-        res.status(500).json({ message: 'Server error' });
-    }
-}); 
+    res.status(200).send({ message: `User ${blocked ? 'blocked' : 'unblocked'} successfully`, payload: userAuthor });
+  } catch (error) {
+    console.error("Error blocking/unblocking user:", error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+}));
 
-// ✅ Toggle user block/unblock status
-adminApp.put("/toggle-block/:userId", verifyAdmin, async (req, res) => {
-    try {
-        const user = await User.findById(req.params.userId);
-        if (!user) return res.status(404).json({ message: 'User not found' });
 
-        user.isBlocked = !user.isBlocked;  // Toggle block status
-        await user.save();
-
-        res.json({ message: `User ${user.isBlocked ? 'blocked' : 'unblocked'} successfully` });
-    } catch (err) {
-        res.status(500).json({ message: 'Error updating user status' });
-    }
-});
+adminApp.get('/unauthorized',(req,res)=>{
+  res.send({message:"Unauthorized request"})
+})
 
 module.exports = adminApp;

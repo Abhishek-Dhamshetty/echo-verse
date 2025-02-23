@@ -1,37 +1,41 @@
-const mongoose=require('mongoose')
+const mongoose = require("mongoose");
 
-//define user or author schema
-const userAuthorSchema=new mongoose.Schema({
-    role:{
-        type:String,
-        required:true,
+// define user or author schema
+const userAuthorSchema = new mongoose.Schema(
+  {
+    role: {
+      type: String,
+      required: true,
     },
-    firstName:{
-        type:String,
-        required:true
+    firstName: {
+      type: String,
+      required: true,
     },
-    lastName:{
-        type:String,
-        //required:true
+    lastName: {
+      type: String,
     },
-    email:{
-        type:String,
-        required:true,
-        unique:true
+    email: {
+      type: String,
+      required: true,
+      unique: true,
     },
-    profileImageUrl:{
-        type:String,
+    profileImageUrl: {
+      type: String,
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
+    blocked: {
+      type: Boolean,
+      default: false, 
+    },
+  },
+  { strict: "throw" }
+);
 
-    },
-    isActive:{
-        type:Boolean,
-        default:true
-    }
-})
+// create model for user author schema
+const UserAuthor = mongoose.model("userauthor", userAuthorSchema);
 
-
-//create model for user author schema
-const UserAuthor=mongoose.model('userauthor',userAuthorSchema)
-
-//export
-module.exports=UserAuthor;
+// export
+module.exports = UserAuthor;
