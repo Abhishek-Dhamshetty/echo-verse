@@ -29,7 +29,7 @@ function ArticleByID() {
     const currentDate = new Date();
     articleAfterChanges.dateOfModification = currentDate.getDate() + "-" + currentDate.getMonth() + "-" + currentDate.getFullYear()
 
-    let res = await axios.put(`http://localhost:3000/author-api/article/${articleAfterChanges.articleId}`,
+    let res = await axios.put(`${BACKEND_URL}/author-api/article/${articleAfterChanges.articleId}`,
       articleAfterChanges,
       {
         headers: {
@@ -46,7 +46,7 @@ function ArticleByID() {
 
   async function addComment(commentObj) {
     commentObj.nameOfUser = currentUser.firstName;
-    let res = await axios.put(`http://localhost:3000/user-api/comment/${currentArticle.articleId}`, commentObj);
+    let res = await axios.put(`${BACKEND_URL}/user-api/comment/${currentArticle.articleId}`, commentObj);
     if (res.data.message === 'Comment added') {
       setCommentStatus(res.data.message)
       setCurrentArticle(res.data.payload)
@@ -56,7 +56,7 @@ function ArticleByID() {
 
   async function deleteArticle() {
     const articleToUpdate = { ...currentArticle, isArticleActive: false };
-    let res = await axios.put(`http://localhost:3000/author-api/articles/${currentArticle.articleId}`, articleToUpdate)
+    let res = await axios.put(`${BACKEND_URL}/author-api/articles/${currentArticle.articleId}`, articleToUpdate)
     if (res.data.message === 'article deleted or restored') {
       setCurrentArticle(res.data.payload)
     }
@@ -64,7 +64,7 @@ function ArticleByID() {
 
   async function restoreArticle() {
     const articleToUpdate = { ...currentArticle, isArticleActive: true };
-    let res = await axios.put(`http://localhost:3000/author-api/articles/${currentArticle.articleId}`, articleToUpdate)
+    let res = await axios.put(`${BACKEND_URL}/author-api/articles/${currentArticle.articleId}`, articleToUpdate)
     if (res.data.message === 'article deleted or restored') {
       setCurrentArticle(res.data.payload)
     }

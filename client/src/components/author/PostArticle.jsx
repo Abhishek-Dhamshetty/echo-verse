@@ -34,7 +34,7 @@ function PostArticle() {
     articleObj.comments = []
     articleObj.isArticleActive = true
 
-    let res = await axios.post(`http://localhost:3000/author-api/article`, articleObj)
+    let res = await axios.post(`${BACKEND_URL}/author-api/article`, articleObj)
     if (res.status === 201) {
       navigate(`/author-profile/${currentUser.email}/articles`)
     }

@@ -41,8 +41,8 @@ function Articles() {
       const token = await getToken();
       // console.log("ayyo",BACKEND_URL)
       const url = category
-        ? `http://localhost:3000/author-api/articles/filter/${category}`
-        : `http://localhost:3000/author-api/articles`;
+        ? `${BACKEND_URL}/author-api/articles/filter/${category}`
+        : `${BACKEND_URL}/author-api/articles`;
 
       const res = await axios.get(url, {
         headers: {

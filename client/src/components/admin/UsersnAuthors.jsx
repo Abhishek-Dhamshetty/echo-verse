@@ -14,7 +14,7 @@ const UsersnAuthors = () => {
     console.log(userId);
 
     axios
-      .get(`http://localhost:3000/user-api/users`, {
+      .get(`${BACKEND_URL}/user-api/users`, {
         headers: {
           Authorization: `Bearer ${userId}`,
         },
@@ -41,7 +41,7 @@ const UsersnAuthors = () => {
       const token = await getToken();
 
       const response = await axios.put(
-        `http://localhost:3000/admin-api/admin/block-unblock/${id}`,
+        `${BACKEND_URL}/admin-api/admin/block-unblock/${id}`,
         { blocked: !blocked },
         {
           headers: {
