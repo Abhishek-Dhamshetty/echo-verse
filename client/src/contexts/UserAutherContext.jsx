@@ -8,7 +8,8 @@ function userAutherContext({ children }) {
     lastName: "",
     email: "",
     profileImageUrl: "",
-    role: ""
+    role: "",
+    blocked:''
   });
 
   useEffect(() => {
