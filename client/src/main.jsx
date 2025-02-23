@@ -12,7 +12,7 @@ import AuthorProfile from './components/author/AuthorProfile.jsx';
 import ArticleByID from './components/common/ArticleById.jsx';
 import Articles from './components/common/Articles.jsx';
 import PostArticle from './components/author/PostArticle.jsx';
-import UserAutherContext from './contexts/userAutherContext.jsx'; 
+import userAutherContext from './contexts/userAutherContext.jsx'; 
 import AdminProfile from './components/admin/AdminProfile.jsx';
 import UsersnAuthors from './components/admin/UsersnAuthors.jsx';
 const browserRouterObj = createBrowserRouter([
@@ -93,10 +93,10 @@ const browserRouterObj = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <UserAutherContext>
+    <userAutherContext>
     <RouterProvider router={browserRouterObj} future={{
         v7_startTransition: true,
       }} />
-    </UserAutherContext>
+    </userAutherContext>
   </StrictMode>
 );
