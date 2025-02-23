@@ -3,16 +3,16 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
-import RootLayout from './components/Rootlayout.jsx';
+import RootLayout from './components/RootLayout.jsx';
 import Home from './components/common/Home.jsx';
 import Signin from './components/common/Signin.jsx';
 import Signup from './components/common/Signup.jsx';
 import UserProfile from './components/user/UserProfile.jsx';
 import AuthorProfile from './components/author/AuthorProfile.jsx';
-import ArticleByID from './components/common/ArticleById.jsx';
+import ArticleByID from './components/common/ArticleByID.jsx';
 import Articles from './components/common/Articles.jsx';
 import PostArticle from './components/author/PostArticle.jsx';
-import userAutherContext from './contexts/userAutherContext.jsx'; 
+import UserAutherContext from './contexts/userAutherContext.jsx'; 
 import AdminProfile from './components/admin/AdminProfile.jsx';
 import UsersnAuthors from './components/admin/UsersnAuthors.jsx';
 const browserRouterObj = createBrowserRouter([
@@ -93,10 +93,10 @@ const browserRouterObj = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <userAutherContext>
+    <UserAutherContext>
     <RouterProvider router={browserRouterObj} future={{
         v7_startTransition: true,
       }} />
-    </userAutherContext>
+    </UserAutherContext>
   </StrictMode>
 );
