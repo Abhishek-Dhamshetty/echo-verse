@@ -2,11 +2,11 @@ const exp=require("express")
 const userApp=exp.Router();
 const UserAuthor=require("../models/userAuthorModel")
 const expressAsyncHandler=require("express-async-handler")
-const createUserOrAuthor=require("../APIs/createUserOrAuthor")
+const createUsrtOrAuthor=require("../APIs/createUsrtOrAuthor")
 const Article=require("../models/articleModel")
 //API
 //create new user
-userApp.post("/user",expressAsyncHandler(createUserOrAuthor))
+userApp.post("/user",expressAsyncHandler(createUsrtOrAuthor))
 
 //post comment
 userApp.put("/comment/:articleId", expressAsyncHandler(async (req, res) => {

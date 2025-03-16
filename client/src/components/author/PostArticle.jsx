@@ -41,37 +41,38 @@ function PostArticle() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 py-8">
-      <div className="max-w-4xl mx-auto px-4">
+    <div className="min-h-screen bg-blue-300 py-8" >
+      <div className="max-w-4xl mx-auto px-4" >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="bg-gray-800 rounded-lg shadow-xl overflow-hidden"
         >
-          <div className="border-b border-gray-700">
-            <h2 className="text-3xl font-bold text-amber-500 text-center py-6 flex items-center justify-center gap-2">
+          <div className="border-b border-gray-700 p-2" style={{backgroundColor:"gray"}}>
+            <h2 className="text-3xl font-bold text-amber-500 text-center py-6 flex items-center justify-center gap-2 p-2"  >
               <Pencil size={28} />
               Write an Article
             </h2>
           </div>
 
-          <div className="p-6">
-            <form onSubmit={handleSubmit(postArticle)} className="space-y-6">
+          <div className="p-5" style={{background: "linear-gradient(135deg, rgb(59, 130, 246), rgb(147, 51, 234), rgb(236, 72, 153))"}}>
+            <form onSubmit={handleSubmit(postArticle)} className="space-y-6 " >
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2 }}
               >
-                <label htmlFor="title" className="block text-gray-300 mb-2 flex items-center gap-2">
+                <label htmlFor="title" className="block text-gray-300 mb-2 flex items-center gap-2 ">
                   <FileText size={20} />
                   Title
                 </label>
                 <input
                   type="text"
-                  className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-gray-100 focus:ring-2 focus:ring-amber-500 focus:border-transparent transition duration-200"
+                  className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-gray-100 focus:ring-2 focus:ring-amber-500 focus:border-transparent transition duration-200  mb-3"
                   id="title"
                   {...register('title')}
+                  style={{background: "linear-gradient(135deg, rgb(59, 130, 246), rgb(147, 51, 234), rgb(236, 72, 153))"}}
                 />
               </motion.div>
 
@@ -82,7 +83,7 @@ function PostArticle() {
               >
                 <label
                   htmlFor="category"
-                  className="block text-gray-300 mb-2 flex items-center gap-2"
+                  className="block text-gray-300 mb-2 flex items-center gap-2  mb-3"
                 >
                   <List size={20} />
                   Select a category
@@ -90,13 +91,14 @@ function PostArticle() {
                 <select
                   {...register('category')}
                   id="category"
-                  className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-gray-100 focus:ring-2 focus:ring-amber-500 focus:border-transparent transition duration-200"
+                  className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-gray-100 focus:ring-2 focus:ring-amber-500 focus:border-transparent transition duration-200 mb-3"
                   defaultValue=""
+                  style={{background: "linear-gradient(135deg, rgb(59, 130, 246), rgb(147, 51, 234), rgb(236, 72, 153))"}}
                 >
                   <option value="" disabled>
                     --categories--
                   </option>
-                  <option value="programming">Programming</option>
+                  <option value="programming" >Programming</option>
                   <option value="AI&ML">AI&ML</option>
                   <option value="database">Database</option>
                 </select>
@@ -116,9 +118,10 @@ function PostArticle() {
                 </label>
                 <textarea
                   {...register('content')}
-                  className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-gray-100 focus:ring-2 focus:ring-amber-500 focus:border-transparent transition duration-200 min-h-[200px]"
+                  className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-gray-100 focus:ring-2 focus:ring-amber-500 focus:border-transparent transition duration-200 min-h-[200px] mb-3"
                   id="content"
                   rows="10"
+                  style={{background: "linear-gradient(135deg, rgb(59, 130, 246), rgb(147, 51, 234), rgb(236, 72, 153))"}}
                 ></textarea>
               </motion.div>
 
@@ -130,7 +133,7 @@ function PostArticle() {
               >
                 <button
                   type="submit"
-                  className="bg-amber-500 hover:bg-amber-600 text-gray-900 font-semibold px-6 py-2 rounded-lg transform hover:scale-105 transition duration-200 flex items-center justify-center gap-2"
+                  className="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-6 py-2 rounded transform hover:scale-105 transition duration-200 flex items-center justify-center gap-2 p-2"
                 >
                   <Send size={20} />
                   Post

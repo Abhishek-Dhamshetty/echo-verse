@@ -1,5 +1,5 @@
 const UserAuthor = require("../models/userAuthorModel");
-async function createUserOrAuthor(req,res){
+async function createUsrtOrAuthor(req,res){
   //get user or author obj from req
   const newUserAuthor=req.body;
   //find the user by email id
@@ -26,5 +26,4 @@ async function createUserOrAuthor(req,res){
 }
 
 
-module.exports=createUserOrAuthor
-
+module.exports=createUsrtOrAuthor

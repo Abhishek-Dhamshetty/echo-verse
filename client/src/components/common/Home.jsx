@@ -1,59 +1,55 @@
 import { useContext, useEffect, useState } from 'react';
 import { userAutherContextObj } from '../../contexts/userAutherContext';
 import { useUser } from '@clerk/clerk-react';
-import axios from 'axios';
+import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import Typewriter from "typewriter-effect";
 import { motion } from 'framer-motion';
-import handwriting from "../../assets/handwriting.jpg"
-import  book from "../../assets/bookspects.jpg"
+
+// Import images
+import blogImage1 from "../../assets/ic-1.png";
+import blogImage2 from "../../assets/ic-2.png";
+
 function Home() {
   const { currentUser, setCurrentUser } = useContext(userAutherContextObj);
   const { isSignedIn, user, isLoaded } = useUser();
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-  // Existing logic for onSelectRole remains the same
   async function onSelectRole(e) {
     setError('');
     const selectedRole = e.target.value;
+    const allowedAdminEmail = "abhishekdhamshetty@gmail.com"; // Your email
+  
+    if (selectedRole === 'admin' && currentUser.email !== allowedAdminEmail) {
+      setError("Only the authorized user can be an admin.");
+      return;
+    }
+  
     currentUser.role = selectedRole;
     let res = null;
+  
     try {
       if (selectedRole === 'author') {
         res = await axios.post(`${BACKEND_URL}/author-api/author`, currentUser);
-        let { message, payload } = res.data;
-        if (message === 'author') {
-          setCurrentUser({ ...currentUser, ...payload });
-          localStorage.setItem("currentuser", JSON.stringify(payload));
-        } else {
-          setError(message);
-        }
-      }
-      if (selectedRole === 'user') {
+      } else if (selectedRole === 'user') {
         res = await axios.post(`${BACKEND_URL}/user-api/user`, currentUser);
-        let { message, payload } = res.data;
-        if (message === 'user') {
-          setCurrentUser({ ...currentUser, ...payload });
-          localStorage.setItem("currentuser", JSON.stringify(payload));
-        } else {
-          setError(message);
-        }
-      }
-      if (selectedRole === 'admin') {
+      } else if (selectedRole === 'admin') {
         res = await axios.post(`${BACKEND_URL}/admin-api/admin`, currentUser);
-        let { message, payload } = res.data;
-        if (message === 'admin') {
-          setCurrentUser({ ...currentUser, ...payload });
-          localStorage.setItem("currentuser", JSON.stringify(payload));
-        } else {
-          setError(message);
-        }
+      }
+  
+      let { message, payload } = res.data;
+      if (message === selectedRole) {
+        setCurrentUser({ ...currentUser, ...payload });
+        localStorage.setItem("currentuser", JSON.stringify(payload));
+      } else {
+        setError(message);
       }
     } catch (err) {
       setError(err.message);
     }
   }
+  
 
   useEffect(() => {
     if (isSignedIn === true) {
@@ -63,6 +59,7 @@ function Home() {
         lastName: user.lastName,
         email: user.emailAddresses[0].emailAddress,
         profileImageUrl: user.imageUrl,
+        blocked:false
       });
     }
   }, [isLoaded]);
@@ -79,125 +76,155 @@ function Home() {
     }
   }, [currentUser]);
 
+  // Carousel Data (Image + Text)
+  const slides = [
+    {
+      image: blogImage1,
+      title: "Write & Publish",
+      text: "Craft engaging articles with ease and share your stories with the world.",
+    },
+    {
+      image: blogImage2,
+      title: "Connect with Readers",
+      text: "Engage with your audience, build a following, and join a vibrant community.",
+    },
+  ];
+
+  // Carousel State
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 2000); // Auto-slide every 3 seconds
+
+    return () => clearInterval(interval);
+  }, [currentIndex]);
+
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex === 0 ? slides.length - 1 : prevIndex - 1));
+  };
+
   return (
-    <div className="min-h-screen relative bg-gradient-to-b from-gray-900 via-gray-800 to-black flex items-center justify-center overflow-hidden">
-      {/* Animated background elements */}
+    <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden font-poppins">
+      
+      {isSignedIn===false && <>
+      {/* Infinite Gradient Background with Continuous Flow */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ 
-            opacity: [0.1, 0.2, 0.1],
-            scale: [1, 1.1, 1]
+          className="absolute inset-0 w-full h-full"
+          animate={{ backgroundPositionX: ["0%", "200%", "0%"] }} // Moves back to start smoothly
+          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+          style={{
+            background: "linear-gradient(90deg, violet, blue, green)", // Your 3 colors
+            backgroundSize: "300% 100%", // Ensures smooth transition
           }}
-          transition={{ 
-            duration: 10,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.1)_0%,_transparent_70%)]"
-        />
-        <motion.div 
-          animate={{ 
-            rotate: 360,
-            scale: [1, 1.2, 1],
-          }}
-          transition={{ 
-            duration: 30,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          className="absolute top-0 left-0 w-full h-full border border-white/5 rounded-full"
-        />
-        <motion.div 
-          animate={{ 
-            rotate: -360,
-            scale: [1.2, 1, 1.2],
-          }}
-          transition={{ 
-            duration: 25,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          className="absolute top-1/4 -left-1/4 w-full h-full border border-white/10 rounded-full"
         />
       </div>
 
-      <div className="max-w-4xl w-full px-4 relative z-10">
-        {isSignedIn === false && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="bg-black/40 backdrop-blur-lg border border-white/10 shadow-2xl rounded-lg overflow-hidden"
-          >
-            <div className="p-8 text-center">
-              <motion.h1 
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="text-3xl font-bold text-white mb-4"
-              >
-                <Typewriter
-                  options={{
-                    strings: ["Welcome to BlogApp"],
-                    autoStart: true,
-                    loop: true,
-                    delay: 50, // Adjusted typing speed
-                    deleteSpeed: 50, // Speed at which text is erased
-                    cursor: "|",
-                  }}
-                />
-              </motion.h1>
-              <motion.p 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-                className="text-gray-300 mb-6"
-              >
-                <Typewriter
-                  options={{
-                    strings: ["Your platform to share stories, connect with readers, and explore diverse perspectives."],
-                    autoStart: true,
-                    loop: true,
-                    delay: 50, // Adjusted typing speed
-                    deleteSpeed: 50, // Speed at which text is erased
-                    cursor: "|",
-                  }}
-                />
-                
-              </motion.p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <motion.div 
-                  whileHover={{ scale: 1.02 }}
-                  className="bg-white/5 p-4 rounded-lg border border-white/10"
-                >
-                  <img 
-                    src={handwriting}
-                    alt="✍️" 
-                    className="rounded-md mb-4 opacity-80"
-                  />
-                  <h3 className="font-semibold text-lg text-white">Write & Publish</h3>
-                  <p className="text-sm text-gray-400">Craft engaging articles with ease and share your stories with the world.</p>
-                </motion.div>
-                <motion.div 
-                  whileHover={{ scale: 1.02 }}
-                  className="bg-white/5 p-4 rounded-lg border border-white/10"
-                >
-                  <img 
-                    src={book}
-                    alt="📖" 
-                    className="rounded-md mb-4 opacity-80"
-                  />
-                  <h3 className="font-semibold text-lg text-white">Connect with Readers</h3>
-                  <p className="text-sm text-gray-400">Engage with your audience, build a following, and join a vibrant community.</p>
-                </motion.div>
-              </div>
-            </div>
-          </motion.div>
-        )}
+      {/* Main Content Box */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="relative z-10 max-w-4xl w-full bg-black/40 backdrop-blur-lg border border-white/10 shadow-2xl rounded-lg p-8 flex flex-col items-center text-center font-montserrat"
+      >
+        {/* Welcome Text */}
+        <motion.h1 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="text-5xl font-extrabold text-white mb-4 tracking-wide font-inter"
+        >
+          <Typewriter
+            options={{
+              strings: ["Welcome to EchoVerse.."],
+              autoStart: true,
+              loop: true,
+              delay: 50,
+              deleteSpeed: 50,
+              cursor: "|",
+            }}
+          />
+        </motion.h1>
 
-        {isSignedIn === true && (
+        <motion.p 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="text-gray-300 mb-6 text-lg tracking-wide font-poppins"
+        >
+          <Typewriter
+            options={{
+              strings: ["Your platform to share stories, connect with readers, and explore diverse perspectives.."],
+              autoStart: true,
+              loop: true,
+              delay: 50,
+              deleteSpeed: 50,
+              cursor: "|",
+            }}
+          />
+        </motion.p>
+
+        {/* Image & Content Carousel (Each Slide Contains Image + Text) */}
+        <div className="relative w-full max-w-lg mx-auto">
+          {/* Image Slide */}
+          <motion.img
+            key={currentIndex}
+            src={slides[currentIndex].image}
+            alt="Blog Preview"
+            className="w-full h-64 object-cover rounded-lg shadow-md"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          />
+
+          {/* Navigation Buttons */}
+          <div className="absolute inset-0 flex items-center justify-between p-2">
+            <button 
+              onClick={prevSlide} 
+              className="bg-black/50 p-2 rounded-full text-white hover:bg-black/70"
+            >
+              ◀
+            </button>
+            <button 
+              onClick={nextSlide} 
+              className="bg-black/50 p-2 rounded-full text-white hover:bg-black/70"
+            >
+              ▶
+            </button>
+          </div>
+        </div>
+
+        {/* Text Below Image (Changes with Carousel) */}
+        <div className="mt-4">
+          <motion.h3 
+            key={slides[currentIndex].title}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="text-2xl font-semibold text-white tracking-wide font-montserrat"
+          >
+            {slides[currentIndex].title}
+          </motion.h3>
+          <motion.p 
+            key={slides[currentIndex].text}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="text-gray-400 text-md tracking-wide font-poppins"
+          >
+            {slides[currentIndex].text}
+          </motion.p>
+        </div>
+
+      </motion.div></>}
+      {isSignedIn===true && <>
+        
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -304,8 +331,8 @@ function Home() {
               Your role defines your interaction with the BlogVerse community.
             </motion.div>
           </motion.div>
-        )}
-      </div>
+        
+</>}
     </div>
   );
 }

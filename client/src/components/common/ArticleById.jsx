@@ -71,24 +71,24 @@ function ArticleByID() {
   }
 
   return (
-    <div className="container mx-auto p-6 bg-gray-900 text-gray-100 min-h-screen transition-all duration-300 ease-in-out overflow-hidden">
+    <div className="container mx-auto p-6 bg-gray-900 text-blue-100 min-h-screen transition-all duration-300 ease-in-out overflow-hidden">
       {editArticleStatus === false ? (
-        <div className="space-y-8 animate-fadeIn">
-          <div className="rounded-lg bg-gray-800 p-6 shadow-lg transition-all duration-300 hover:shadow-xl">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-              <div className="space-y-2">
-                <h1 className="text-4xl font-bold text-white transition-all duration-300 hover:text-blue-400">
+        <div className="space-y-8 animate-fadeIn mt-2 p-2">
+          <div className="rounded-lg bg-gray-800 p-6 shadow-lg transition-all duration-300 hover:shadow-xl border border-2">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 p-2">
+              <div className="space-y-2 p-2 mt-2">
+                <h1 className="text-4xl font-bold text-white transition-all duration-300 hover:text-blue-400 mx-2">
                   {currentArticle.title}
                 </h1>
-                <div className="space-x-4 text-sm text-gray-400">
+                <div className="space-x-4 text-sm text-gray-400 p-2">
                 <FaCalendarAlt className="text-blue-400" />
                   <span>Created on: {currentArticle.dateOfCreation}</span>
                   <FaCalendarAlt className="text-yellow-400" />
                   <span>Modified on: {currentArticle.dateOfModification}</span>
                 </div>
               </div>
-              <div className="flex items-center space-x-4">
-                <div className="text-center transition-transform duration-300 hover:scale-105">
+              <div className="flex items-center space-x-4 p-2">
+                <div className="text-center transition-transform duration-300 hover:scale-105 p-2">
                   <img
                     src={currentArticle.authorData.profileImageUrl}
                     className="w-16 h-16 rounded-full border-2 border-blue-400"
@@ -97,7 +97,7 @@ function ArticleByID() {
                   <p className="mt-2 text-sm font-medium">{currentArticle.authorData.nameOfAuthor}</p>
                 </div>
                 {currentUser.role === 'author' && (
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 p-2">
                     <button
                       className="p-2 rounded-full bg-gray-700 hover:bg-gray-600 transition-all duration-300"
                       onClick={enableEdit}
@@ -106,7 +106,7 @@ function ArticleByID() {
                     </button>
                     {currentArticle.isArticleActive ? (
                       <button
-                        className="p-2 rounded-full bg-gray-700 hover:bg-gray-600 transition-all duration-300"
+                        className="p-2 rounded-full bg-gray-700 hover:bg-gray-600 transition-all duration-300 py-2"
                         onClick={deleteArticle}
                       >
                         <MdDelete className="text-red-400 text-xl" />
@@ -125,16 +125,16 @@ function ArticleByID() {
             </div>
           </div>
 
-          <div className="mt-8 prose prose-invert max-w-none">
-            <p className="text-lg leading-relaxed whitespace-pre-line">
+          <div className="mt-8 prose prose-invert max-w-none mt-2">
+            <p className="text-lg leading-relaxed whitespace-pre-line p-2 border border-2 border-blue-600 rounded">
               {currentArticle.content}
             </p>
           </div>
 
           <div className="mt-12 space-y-6">
-          <FaCommentAlt className="text-blue-400" />
-            <h2 className="text-2xl font-bold">Comments</h2>
-            <div className="space-y-4">
+          <FaCommentAlt className="text-blue-400" style={{display:"inline",marginRight:"8px"}}/>
+            <h2 className="text-2xl font-bold inline">Comments</h2>
+            <div className="space-y-4 mt-2 border border-2 rounded">
               {currentArticle.comments.length === 0 ? (
                 <p className="text-xl text-gray-400">No comments yet...</p>
               ) : (
@@ -163,8 +163,8 @@ function ArticleByID() {
                 className="w-full p-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-300"
                 placeholder="Add a comment..."
               />
-              <button className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all duration-300 mt-4">
-              <FaCommentAlt />
+              <button className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all duration-300 mt-4 p-2" style={{borderRadius:"10px",width:"150px"}}>
+              <FaCommentAlt style={{display:"inline",marginRight:"2px"}}/>
                 Add Comment
               </button>
             </form>
@@ -220,4 +220,3 @@ function ArticleByID() {
 }
 
 export default ArticleByID
-

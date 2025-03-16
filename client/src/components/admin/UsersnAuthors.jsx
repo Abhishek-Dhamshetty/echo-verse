@@ -80,53 +80,56 @@ const UsersnAuthors = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100 p-4 sm:p-8">
+    <div className="min-h-screen bg-blue-100 text-gray-900 p-6">
+      {/* Page Title */}
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-8 text-indigo-400 text-center sm:text-left">Admin Dashboard</h1>
         
-        <div className="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
-          <div className="overflow-x-auto">
+        
+        {/* User Table */}
+        <div className="bg-white rounded-xl shadow-md overflow-hidden ">
+          <div className="overflow-x-auto mt-2">
             <table className="w-full table-auto">
-              <thead className="bg-gray-700">
+              <thead className="bg-indigo-600 text-white">
                 <tr>
-                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-indigo-300 uppercase tracking-wider">Name</th>
-                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-indigo-300 uppercase tracking-wider hidden md:table-cell">Email</th>
-                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-indigo-300 uppercase tracking-wider">Role</th>
-                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-indigo-300 uppercase tracking-wider">Status</th>
-                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-indigo-300 uppercase tracking-wider">Action</th>
+                  <th className="px-4 py-3 text-left text-sm font-medium uppercase tracking-wider">Name</th>
+                  <th className="px-4 py-3 text-left text-sm font-medium uppercase tracking-wider hidden md:table-cell">Email</th>
+                  <th className="px-4 py-3 text-left text-sm font-medium uppercase tracking-wider">Role</th>
+                  <th className="px-4 py-3 text-left text-sm font-medium uppercase tracking-wider">Status</th>
+                  <th className="px-4 py-3 text-left text-sm font-medium uppercase tracking-wider">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-700">
+              <tbody className="divide-y divide-gray-300">
                 {users.map((user) => (
-                  <tr key={user._id} className="hover:bg-gray-700 transition-colors">
-                    <td className="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm">
-                      <div className="font-medium text-gray-100">{user.firstName} {user.lastName}</div>
-                      <div className="text-xs text-gray-400 md:hidden mt-1">{user.email}</div>
+                  <tr key={user._id} className="hover:bg-gray-200 transition-all duration-200">
+                    <td className="px-4 py-3 text-sm font-medium text-gray-800">
+                      {user.firstName} {user.lastName}
+                      <div className="text-xs text-gray-500 md:hidden">{user.email}</div>
                     </td>
-                    <td className="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm hidden md:table-cell">{user.email}</td>
-                    <td className="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm">
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                        user.role === "admin" ? "bg-purple-900 text-purple-200" : 
-                        user.role === "author" ? "bg-blue-900 text-blue-200" : "bg-gray-600 text-gray-200"
+                    <td className="px-4 py-3 text-sm hidden md:table-cell text-gray-700">{user.email}</td>
+                    <td className="px-4 py-3 text-sm">
+                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium shadow-md ${
+                        user.role === "admin" ? "bg-purple-600 text-white" :
+                        user.role === "author" ? "bg-blue-600 text-white" :
+                        "bg-gray-500 text-white"
                       }`}>
                         {user.role}
                       </span>
                     </td>
-                    <td className="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm">
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                        user.blocked ? "bg-red-900 text-red-200" : "bg-green-900 text-green-200"
+                    <td className="px-4 py-3 text-sm">
+                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium shadow-md ${
+                        user.blocked ? "bg-red-600 text-white" : "bg-green-600 text-white"
                       }`}>
                         {user.blocked ? "Blocked" : "Active"}
                       </span>
                     </td>
-                    <td className="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm">
+                    <td className="px-4 py-3 text-sm">
                       <button
                         onClick={() => toggleBlockStatus(user._id, user.blocked)}
-                        className={`px-2 sm:px-3 py-1 rounded text-xs sm:text-sm font-medium ${
+                        className={`px-3 py-2 rounded text-sm font-medium transition-all duration-200 shadow-md ${
                           user.blocked
-                            ? "bg-green-700 hover:bg-green-600 text-green-100"
-                            : "bg-red-700 hover:bg-red-600 text-red-100"
-                        } transition-colors`}
+                            ? "bg-green-600 hover:bg-green-500 text-white rounded-lg"
+                            : "bg-red-600 hover:bg-red-500 text-white rounded-lg"
+                        }`}
                       >
                         {user.blocked ? "Unblock" : "Block"}
                       </button>

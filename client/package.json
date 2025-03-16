@@ -11,8 +11,9 @@
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.22.8",
+    "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.0.8",
-    "axios": "^1.7.9",
+    "axios": "^1.8.3",
     "bootstrap": "^5.3.3",
     "framer-motion": "^12.4.7",
     "lottie-react": "^2.4.1",

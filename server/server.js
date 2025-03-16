@@ -8,7 +8,7 @@ const port = process.env.PORT || 4000;
 
 // CORS Configuration
 const corsOptions = {
-  origin: [ "https://your-deployed-app.vercel.app"], // Allowed frontend domains
+  origin: [ "http://localhost:5173"], // Allowed frontend domains
   methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
   allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
   credentials: true, // Allow cookies & credentials (useful for authentication)
@@ -44,16 +44,6 @@ mongoose
 app.use("/user-api", userApp);
 app.use("/author-api", authorApp);
 app.use("/admin-api", adminApp);
-
-// SSO Callback Route (For Clerk)
-app.get("/sso-callback", (req, res) => {
-  res.status(200).send("SSO Callback Received");
-});
-
-// 404 Route Handling (Catch Undefined Routes)
-app.use("*", (req, res) => {
-  res.status(404).json({ message: "Route not found" });
-});
 
 // Global Error Handling Middleware
 app.use((err, req, res, next) => {

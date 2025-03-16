@@ -30,7 +30,8 @@ adminApp.post("/admin",
 }));
 
 
-adminApp.put("/admin/block-unblock/:id",requireAuth({signInUrl:"unauthorized"}) ,expressAsyncHandler(async (req, res) => {
+adminApp.put("/admin/block-unblock/:id",requireAuth({signInUrl:"/unauthorized"}) ,expressAsyncHandler(async (req, res) => {
+  console.log("Authenticated User:", req.auth);
   const id = req.params.id;
   const { blocked } = req.body; 
 

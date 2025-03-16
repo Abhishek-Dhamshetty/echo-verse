@@ -1,13 +1,13 @@
 const exp = require('express')
 const authorApp = exp.Router();
 const expressAsyncHandler = require("express-async-handler");
-const createUserOrAuthor=require("../APIs/createUserOrAuthor")
+const createUsrtOrAuthor=require("../APIs/createUsrtOrAuthor")
 const Article = require("../models/articleModel")
 const {requireAuth,clerkMiddleware}=require("@clerk/express")
 require('dotenv').config()
 
 //create new author
-authorApp.post("/author", expressAsyncHandler(createUserOrAuthor))
+authorApp.post("/author", expressAsyncHandler(createUsrtOrAuthor))
 
 //create new article
 authorApp.post("/article",expressAsyncHandler(async(req,res)=>{
@@ -22,7 +22,7 @@ authorApp.post("/article",expressAsyncHandler(async(req,res)=>{
 
 
 //read all articles
-authorApp.get('/articles',requireAuth({signInUrl:"unauthorized"}) ,expressAsyncHandler(async (req, res) => {
+authorApp.get('/articles',requireAuth({signInUrl:"/unauthorized"}) ,expressAsyncHandler(async (req, res) => {
     //read all articles from db
    
     const listOfArticles = await Article.find({ isArticleActive: true});

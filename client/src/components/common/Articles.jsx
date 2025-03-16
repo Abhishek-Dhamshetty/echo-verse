@@ -76,12 +76,12 @@ function Articles() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-black">
-      <div className="container px-4 py-8 mx-auto max-w-7xl">
+    <div className="min-h-screen bg-gray-900 ">
+      <div className="container px-4 py-8 mx-auto max-w-7xl p-2 border border-2 border-gray-600 bg-blue-300">
         <div className="flex flex-col md:flex-row items-center justify-between mb-12">
-          <div className="relative mb-8 md:mb-0">
-            <h1 className="text-4xl font-bold text-white mb-2 flex items-center">
-              <BookOpen className="inline-block mr-3 text-primary-500" />
+          <div className="relative mb-8 md:mb-0 p-2" >
+            <h1 className="text-4xl font-bold text-white mb-2 flex items-center p-2 rounded" style={{color:"gold",background: "linear-gradient(135deg, rgb(59, 130, 246), rgb(147, 51, 234), rgb(236, 72, 153))"}}>
+              <BookOpen className="inline-block mr-3 text-primary-500 animate-bounce" />
               Articles Explorer
             </h1>
             <div className="h-1 w-20 bg-gradient-to-r from-primary-500 to-purple-500 rounded-full"></div>
@@ -94,7 +94,7 @@ function Articles() {
             <select
               value={selectedCategory}
               onChange={handleCategoryChange}
-              className="w-full pl-10 pr-8 py-3 bg-black/40 backdrop-blur-sm border border-gray-700 rounded-xl appearance-none text-white transition-all duration-300 hover:border-primary-500 focus:outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20"
+              className="w-full pl-10 pr-8 py-3 bg-black/40 backdrop-blur-sm border border-gray-700 rounded-xl appearance-none text-white transition-all duration-300 hover:border-primary-500 focus:outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-500/20 p-2"
             >
               <option value="">All Categories</option>
               <option value="AI&ML">AI & Machine Learning</option>
@@ -126,7 +126,7 @@ function Articles() {
             {articles.map((articleObj, index) => (
               <div
                 key={articleObj.articleId}
-                className="group relative bg-black/40 backdrop-blur-sm border border-gray-800 rounded-xl overflow-hidden transition-all duration-500 hover:bg-black/60 hover:border-primary-500/50 hover:transform hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-500/10"
+                className="group relative bg-black/40 backdrop-blur-sm border border-gray-800 rounded-xl overflow-hidden transition-all duration-500 hover:bg-black/60 hover:border-primary-500/50 hover:transform hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-500/10 p-3"
                 style={{
                   animation: `fadeIn 0.5s ease-out ${index * 0.1}s both`,
                 }}
@@ -139,7 +139,7 @@ function Articles() {
                 
                 <div className="p-6">
                   <div className="flex items-center mb-6 space-x-3">
-                    <div className="relative">
+                    <div className="relative p-2">
                       <div className="absolute inset-0 bg-gradient-to-r from-primary-500/20 to-purple-500/20 rounded-full blur group-hover:blur-xl transition-all duration-300"></div>
                       <img
                         src={articleObj.authorData.profileImageUrl}
@@ -148,11 +148,11 @@ function Articles() {
                       />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-300 flex items-center">
+                      <p className="text-sm text-white-300 flex items-center">
                         <User className="w-4 h-4 mr-1 text-primary-400" />
                         {articleObj.authorData.nameOfAuthor}
                       </p>
-                      <p className="text-xs text-gray-500 flex items-center mt-1">
+                      <p className="text-xs text-white flex items-center mt-1">
                         <Clock className="w-3 h-3 mr-1 text-primary-400" />
                         {articleObj.dateOfModification}
                       </p>
@@ -163,7 +163,7 @@ function Articles() {
                     {articleObj.title}
                   </h3>
                   
-                  <p className="text-gray-400 mb-6 line-clamp-3">
+                  <p className="text-white-400 mb-6 line-clamp-3">
                     {articleObj.content.substring(0, 120) + '...'}
                   </p>
                   

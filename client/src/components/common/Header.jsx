@@ -1,202 +1,141 @@
-import { useContext, useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useClerk, useUser } from '@clerk/clerk-react';
-import { userAutherContextObj } from '../../contexts/userAutherContext';
-import logo from "../../assets/logo.jpg"
+import { FaSun, FaMoon } from 'react-icons/fa';
+import logo from '../../assets/logo.png';
+
 function Header() {
   const [isExpanded, setIsExpanded] = useState(false);
-  const navigate = useNavigate();
+  const [darkMode, setDarkMode] = useState(localStorage.getItem('theme') === 'dark');
+  const [typewriterText, setTypewriterText] = useState('');
+  const location = useLocation();
   const { signOut } = useClerk();
-  const { currentUser, setCurrentUser } = useContext(userAutherContextObj);
-  const { isSignedIn, user, isLoaded } = useUser();
+  const { isSignedIn, user } = useUser();
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', darkMode);
+  }, [darkMode]);
+
+  useEffect(() => {
+    const text = 'EchoVerse';
+    let index = 0;
+    let isDeleting = false;
+
+    const typeWriterEffect = () => {
+      setTypewriterText(text.slice(0, index));
+
+      if (!isDeleting && index < text.length) {
+        index++;
+      } else if (isDeleting && index > 0) {
+        index--;
+      }
+
+      if (index === text.length) {
+        isDeleting = true;
+        setTimeout(typeWriterEffect, 1000);
+      } else if (index === 0) {
+        isDeleting = false;
+        setTimeout(typeWriterEffect, 1000);
+      } else {
+        setTimeout(typeWriterEffect, 250);
+      }
+    };
+
+    typeWriterEffect();
+  }, []);
+  
   const toggleNavbar = () => {
     setIsExpanded(!isExpanded);
+  };
+  const toggleTheme = () => {
+    const newTheme = darkMode ? 'light' : 'dark';
+    localStorage.setItem('theme', newTheme);
+    setDarkMode(!darkMode);
   };
 
   async function handleSignOut() {
     await signOut();
-    setCurrentUser(null);
-    localStorage.removeItem('currentuser');
-    navigate('/');
+    toggleNavbar();
   }
 
   return (
-    <>
-      <nav className="bg-[#000000] shadow-lg relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex-shrink-0 flex items-center">
-              <NavLink to="/" className="flex items-center">
-                <span className="text-2xl font-bold text-white">
-                  <img src={logo} alt="" style={{width:"50px"}}/>
-                </span>
-              </NavLink>
-            </div>
+    <nav className={`fixed top-0 left-0 w-full h-15 z-50 shadow-lg transition-all duration-300 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-black'}`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-14 items-center">
 
-            <div className="flex items-center md:hidden">
-              <button
-                onClick={toggleNavbar}
-                className="inline-flex items-center justify-center p-2 rounded-md text-gray-300 hover:text-white hover:bg-gray-800 focus:outline-none"
-                aria-expanded={isExpanded}
-              >
-                <span className="sr-only">Open main menu</span>
-                <svg
-                  className={`${isExpanded ? 'hidden' : 'block'} h-6 w-6`}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-                <svg
-                  className={`${isExpanded ? 'block' : 'hidden'} h-6 w-6`}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-
-            <div className="hidden md:flex md:items-center md:space-x-4">
-              {!isSignedIn ? (
-                <div className="flex items-center space-x-4">
-                  <NavLink
-                    to="/"
-                    className={({ isActive }) =>
-                      `px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 hover:scale-105 ${
-                        isActive ? 'text-black bg-white' : 'text-white bg-transparent hover:bg-gray-800'
-                      }`
-                    }
-                  >
-                    Home
-                  </NavLink>
-                  <NavLink
-                    to="/signin"
-                    className={({ isActive }) =>
-                      `px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 hover:scale-105 ${
-                        isActive ? 'text-black bg-white' : 'text-white bg-transparent hover:bg-gray-800'
-                      }`
-                    }
-                  >
-                    Sign In
-                  </NavLink>
-                  <NavLink
-                    to="/signup"
-                    className={({ isActive }) =>
-                      `px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 hover:scale-105 ${
-                        isActive ? 'text-black bg-white' : 'text-white bg-transparent hover:bg-gray-800'
-                      }`
-                    }
-                  >
-                    Sign Up
-                  </NavLink>
-                </div>
-              ) : (
-                <div className="flex items-center space-x-4">
-                  <div className="relative flex items-center">
-                    <img
-                      src={user.imageUrl}
-                      alt={user.firstName}
-                      className="h-10 w-10 rounded-full border-2 border-white "
-                    />
-                    <span className="ml-3 text-sm font-medium text-white">{user.firstName}</span>
-                  </div>
-                  <button
-                    onClick={handleSignOut}
-                    className="px-4 py-2 text-sm font-medium text-white bg-gray-800 hover:bg-gray-700 rounded-full transition-all duration-200 hover:scale-105"
-                  >
-                    Sign Out
-                  </button>
-                </div>
-              )}
-            </div>
+          {/* Logo & Title */}
+          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate('/')}>
+            <img src={logo} alt="Logo" className="h-9 w-9" />
+            <span className={`text-xl font-bold tracking-wider transition-all duration-300 ${darkMode ? 'text-white' : 'text-black'}`}>
+              {typewriterText}
+            </span>
           </div>
-        </div>
 
-        {/* Mobile menu backdrop */}
-        <div 
-          className={`fixed inset-0 bg-black/30 backdrop-blur-sm transition-opacity md:hidden z-[999] ${
-            isExpanded ? 'opacity-100' : 'opacity-0 pointer-events-none'
-          }`}
-          onClick={toggleNavbar}
-        />
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex md:items-center ml-auto" style={{ gap: "20px" }}>
+            <NavLink
+              to="/"
+              className={`nav-btn ${location.pathname === '/' ? 'active-btn' : ''}`}
+            >
+              Home
+            </NavLink>
 
-        {/* Mobile menu panel */}
-        <div 
-          className={`fixed top-0 left-0 h-full w-64 bg-black/70 backdrop-blur-md transform transition-transform duration-300 ease-in-out md:hidden z-[1000] ${
-            isExpanded ? 'translate-x-0' : '-translate-x-full'
-          }`}
-        >
-          <div className="px-4 pt-16 pb-3 space-y-4">
             {!isSignedIn ? (
               <>
-                <NavLink
-                  to="/"
-                  onClick={toggleNavbar}
-                  className={({ isActive }) =>
-                    `block px-4 py-2 rounded-full text-base font-medium transition-all duration-200 ${
-                      isActive ? 'text-black bg-white' : 'text-white hover:bg-white/10'
-                    }`
-                  }
-                >
-                  Home
-                </NavLink>
-                <NavLink
-                  to="/signin"
-                  onClick={toggleNavbar}
-                  className={({ isActive }) =>
-                    `no-underline block px-4 py-2 rounded-full text-base font-medium transition-all duration-200 ${
-                      isActive ? 'text-black bg-white' : 'text-white hover:bg-white/10'
-                    }`
-                  }
-                >
+                <NavLink to="/signin" className={`nav-btn ${location.pathname === '/signin' ? 'active-btn' : ''}`} style={{ gap: "20px" }}>
                   Sign In
                 </NavLink>
-                <NavLink
-                  to="/signup"
-                  onClick={toggleNavbar}
-                  className={({ isActive }) =>
-                    `block px-4 py-2 rounded-full text-base font-medium transition-all duration-200  ${
-                      isActive ? 'text-black bg-white' : 'text-white hover:bg-white/10'
-                    }`
-                  }
-                >
+                <NavLink to="/signup" className={`nav-btn ${location.pathname === '/signup' ? 'active-btn' : ''}`} style={{ gap: "20px" }}>
                   Sign Up
                 </NavLink>
               </>
             ) : (
-              <div className="space-y-4">
-                <div className="flex items-center space-x-3 px-4">
-                  <img
-                    src={user.imageUrl}
-                    alt={user.firstName}
-                    className="h-10 w-10 rounded-full border-2 border-white"
-                  />
-                  <span className="text-sm font-medium text-white">{user.firstName}</span>
-                </div>
-                {currentUser?.role && (
-                  <span className="block px-4 py-1 text-xs font-bold text-white bg-white/20 rounded-full w-fit">
-                    {currentUser.role}
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2" style={{ gap: "20px" }}>
+                  <img src={user.imageUrl} alt={user.firstName} className="h-9 w-9 rounded-full border-2 border-gray-600"  />
+                  <span className={`text-sm font-medium ${darkMode ? 'text-white' : 'text-gray-700'}`} >
+                    {user.firstName}
                   </span>
-                )}
-                <button
-                  onClick={() => {
-                    handleSignOut();
-                    toggleNavbar();
-                  }}
-                  className="w-full px-4 py-2 text-sm font-medium text-white bg-white/10 hover:bg-white/20 rounded-full transition-colors"
-                >
+                </div>
+                <button onClick={handleSignOut} className="nav-btn bg-red-500 hover:bg-red-600 text-white" style={{ marginLeft: "20px" }}>
                   Sign Out
                 </button>
               </div>
             )}
+
+            {/* Theme Toggle */}
+            <button onClick={toggleTheme} className="theme-toggle">
+              {darkMode ? <FaSun className="text-yellow-400" /> : <FaMoon className="text-blue-600" />}
+            </button>
           </div>
         </div>
-      </nav>
-    </>
+      </div>
+
+      <style>{`
+  .nav-btn {
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none; /* Underline removed */
+    color: white;
+    background: linear-gradient(135deg, rgb(59, 130, 246), rgb(147, 51, 234), rgb(236, 72, 153));
+    border-radius: 6px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .nav-btn:hover {
+    transform: scale(1.05);
+  }
+
+  .active-btn {
+    background: linear-gradient(135deg, rgb(255, 182, 72), rgb(255, 94, 98));
+    font-weight: bold;
+    transform: scale(1.05);
+  }
+`}</style>
+
+    </nav>
   );
 }
 
