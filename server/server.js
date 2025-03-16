@@ -8,7 +8,7 @@ const port = process.env.PORT || 4000;
 
 // CORS Configuration
 const corsOptions = {
-  origin: [ "echo-verse-cvdcf1ac1-abhisheks-projects-284f9ec4.vercel.app"], // Allowed frontend domains
+  origin: [ "https://echo-verse-theta.vercel.app"], // Allowed frontend domains
   methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
   allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
   credentials: true, // Allow cookies & credentials (useful for authentication)
