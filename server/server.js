@@ -8,7 +8,7 @@ const port = process.env.PORT || 4000;
 
 // CORS Configuration
 const corsOptions = {
-  origin: [ "http://localhost:5173"], // Allowed frontend domains
+  origin: [ "echo-verse-cvdcf1ac1-abhisheks-projects-284f9ec4.vercel.app"], // Allowed frontend domains
   methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
   allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
   credentials: true, // Allow cookies & credentials (useful for authentication)
