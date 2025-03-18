@@ -1,12 +1,12 @@
 # EchoVerse
 
-A full-stack blogging platform where users can create, manage, and explore blogs. The platform includes user authentication, an intuitive dashboard, an engaging reading experience, and is deployed on free-tier hosting services.
+A full-stack blogging platform where users can create, manage, and explore blogs. The platform includes user authentication using **Clerk**, an intuitive dashboard, and an engaging reading experience.
 
 ## Features
 
 ### Frontend
 1. **User Authentication**
-   - Users can register and log in.
+   - Users can register and log in using **Clerk Authentication**.
    - Admin authentication with restricted access to manage blogs.
    
 2. **Blog Dashboard**
@@ -22,11 +22,11 @@ A full-stack blogging platform where users can create, manage, and explore blogs
    - Real-time updates for new comments and interactions.
    
 5. **Responsive Design**
-   - The platform is optimized for desktops, tablets, and mobile devices.
+   - Optimized for desktops, tablets, and mobile devices.
 
 ### Backend
 1. **Authentication API**
-   - Secure authentication using JWT for user login and registration.
+   - Secure authentication handled by **Clerk Authentication**.
    
 2. **Blog Management API**
    - CRUD operations for blog creation, editing, and deletion.
@@ -36,30 +36,44 @@ A full-stack blogging platform where users can create, manage, and explore blogs
    - WebSockets for real-time updates on new comments and blog interactions.
    
 4. **Database**
-   - User and blog data is stored efficiently in MongoDB or Planetscale.
+   - User and blog data is stored efficiently in **MongoDB Atlas**.
 
 ## Deployment
 
 ### Frontend Hosting
-- Deployed on [Vercel](https://vercel.com) or [Netlify](https://www.netlify.com) for free-tier hosting.
+- Deployed on **Vercel** for free-tier hosting.
 
 ### Backend Hosting
-- Deployed on [Render](https://render.com) or [Railway.app](https://railway.app) for free-tier hosting.
+- Deployed on **Render** for free-tier hosting.
 
 ### Database
-- MongoDB Atlas (Free Plan) or Planetscale (Free Plan) is used for database hosting.
+- **MongoDB Atlas** (Free Plan) is used for database hosting.
 
 ## Setup Instructions
 
 ### Prerequisites
 - Node.js installed on your machine.
-- MongoDB Atlas or Planetscale account for the database.
+- MongoDB Atlas account for the database.
+- Clerk account for authentication setup.
 
 ### Steps to Run Locally
 
 1. Clone the repository:
-   ```bash
+   ```sh
    git clone https://github.com/your-username/echoverse.git
    cd echoverse
    ```
+2. Install dependencies for both frontend and backend:
+   ```sh
+   npm install
+   ```
+3. Set up environment variables:
+   - Create a `.env` file and configure **Clerk Authentication** and **MongoDB Atlas** settings.
+
+4. Start the development server:
+   ```sh
+   npm start
+   ```
+
+5. Open your browser and visit `https://echo-verse-theta.vercel.app/` to access the application.
 
