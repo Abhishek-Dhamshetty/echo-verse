@@ -78,7 +78,7 @@ const browserRouterObj = createBrowserRouter([
         children: [
           {
             index: true, // This will make the `usersnauthors` page the default
-            element: <UsersnAuthors />,
+            
           },
           {
             path: 'usersnauthors',
