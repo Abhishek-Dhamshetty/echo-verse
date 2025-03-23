@@ -54,10 +54,15 @@ function Header() {
     setDarkMode(!darkMode);
   };
 
-  async function handleSignOut() {
-    await signOut();
-    toggleNavbar();
-  }
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      localStorage.clear();
+      navigate('/');
+    } catch (err) {
+      console.error('Error signing out:', err);
+    }
+  };
 
   return (
     <nav className={`fixed top-0 left-0 w-full h-15 z-50 shadow-lg transition-all duration-300 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-black'}`}>
